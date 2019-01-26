@@ -30,9 +30,6 @@ sudo apt-get install -y apache2
 echo "-------------------------------------------------------------------------"
 echo Preparing and installing MariaDB
 echo "-------------------------------------------------------------------------"
-
-# Set password and install MariaDB
-echo "Preparing MariaDB..."
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password password $MARIADB_PASSWORD"
 sudo debconf-set-selections <<< "mysql-server mysql-server/root_password_again password $MARIADB_PASSWORD"
 sudo apt-get install -y mariadb-server
@@ -53,7 +50,7 @@ sudo apt-get -y update
 sudo apt-get -y install php7.2 php7.2-opcache libapache2-mod-php7.2 php7.2-mysql php7.2-curl php7.2-json php7.2-gd  php7.2-intl php7.2-mbstring php7.2-xml php7.2-zip php7.2-fpm php7.2-readline
 
 echo "-------------------------------------------------------------------------"
-echo Apache2 and PHP7 configuration
+echo Apache2, MariaDB and PHP7 configuration
 echo "-------------------------------------------------------------------------"
 sudo cp /var/shared/config/apache2/apache2.conf /etc/apache2/apache2.conf
 sudo a2enmod rewrite
@@ -61,13 +58,14 @@ sudo cp /var/shared/config/php/7.2/apache2/php.ini /etc/php/7.2/apache2/php.ini
 sudo cp /var/shared/config/php/7.2/cli/php.ini /etc/php/7.2/cli/php.ini
 sudo cp /var/shared/config/php/7.2/fpm/php.ini /etc/php/7.2/fpm/php.ini
 sudo cp /var/shared/config/php/7.2/fpm/php-fpm.conf /etc/php/7.2/fpm/php-fpm.conf
+sudo cp /var/shared/config/mariadb/50-server.cnf /etc/mysql/mariadb.conf.d/
 sudo a2enmod proxy_fcgi setenvif
 sudo a2enconf php7.2-fpm
 sudo a2dismod php7.2
 sudo cp /var/shared/config/apache2/vhost/default/localhost.local.conf /etc/apache2/sites-available
 sudo a2ensite localhost.local.conf
 sudo service apache2 reload
-
+sudo service mysql restart
 echo "-------------------------------------------------------------------------"
 echo Installing composer
 echo "-------------------------------------------------------------------------"
