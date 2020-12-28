@@ -38,3 +38,20 @@ An example with Cakephp
 Now run ```$ sudo gvhost app.local /var/shared/www/my_app_name r save```
 
 Point your browser to app.local and enjoy.
+
+
+
+# Vagrant was unable to mount VirtualBox shared folders
+
+Follow this commands : 
+
+```vagrant vbguest --do install --no-cleanup```
+
+```vagrant ssh```
+
+```sudo /mnt/VBoxLinuxAdditions.run```
+
+```exit```
+
+```vagrant reload```
+
